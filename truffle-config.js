@@ -82,7 +82,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "^0.7.0"
+      version: "^0.7.0",
       // version: "0.5.1",    // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
@@ -92,8 +92,11 @@ module.exports = {
       //  },
       //  evmVersion: "byzantium"
       // }
-    }
+    },
   },
+
+  // Allow frontend to access the contracts
+  contracts_build_directory: "./src/contracts",
 
   // Truffle DB is currently disabled by default; to enable it, change enabled: false to enabled: true
   //
@@ -102,6 +105,6 @@ module.exports = {
   // $ truffle migrate --reset --compile-all
 
   db: {
-    enabled: false
-  }
+    enabled: false,
+  },
 };
