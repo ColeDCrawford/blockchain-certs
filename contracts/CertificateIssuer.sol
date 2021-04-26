@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 
 pragma solidity ^0.7.0;
+pragma experimental ABIEncoderV2;
+// Using the new ABI coder which can return arrays of structs
 
 contract CertificateIssuer {
     address public owner;
@@ -143,17 +145,19 @@ contract CertificateIssuer {
         return(cert.certificateId, cert.studentName, cert.studentAddress, cert.certificateTypeId, cert.issuedDate, cert.valid);
     }
     
-    function addStudent(address _studentAddress, string calldata _studentName) public onlyOwner{
+    function addStudent(address _studentAddress, string calldata _studentName) public onlyOwner returns (bool success){
         uint[] memory tempEIds;
         uint[] memory tempCertIds;
         Student memory tempStudent = Student(_studentAddress, _studentName, tempEIds, tempCertIds);
         students[_studentAddress] = tempStudent;
+        return true;
     }
     
-    function addCourse(string calldata _courseName, string calldata _courseDesc) public onlyOwner{
-        uint courseId = getCourseId();
+    function addCourse(string calldata _courseName, string calldata _courseDesc) public onlyOwner returns (uint courseId){
+        courseId = getCourseId();
         Course memory tempCourse = Course(courseId, _courseName, _courseDesc);
         courses[courseId] = tempCourse;
+        return courseId;
     }
     
     function addEnrollment(uint _courseId, address _studentAddress, bool _pass) public onlyOwner{
@@ -180,11 +184,12 @@ contract CertificateIssuer {
         return exists;
     }
     
-    function addCertificateType(string calldata _certName, string calldata _certDesc, uint _numCoursesRequired) public onlyOwner{
+    function addCertificateType(string calldata _certName, string calldata _certDesc, uint _numCoursesRequired) public onlyOwner returns (uint certTypeId){
         require(_numCoursesRequired > 0, "A certificate must require at least one course.");
-        uint certTypeId = getCertTypeId();
+        certTypeId = getCertTypeId();
         CertificateType memory certType = CertificateType(_certName, certTypeId, _certDesc, _numCoursesRequired);
         certificate_types[certTypeId] = certType;
+        return certTypeId;
     }
     
     // function getStudentEnrollmentIds(address _address) public view returns(uint [] memory){
