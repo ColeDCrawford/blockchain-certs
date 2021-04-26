@@ -1,32 +1,57 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <b-container id="app">
+    <b-row>
+      <b-col>
+        <navbar/>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <router-view/>
+      </b-col>
+    </b-row>
+
+  </b-container>
 </template>
 
+<script>
+import { mapGetters } from "vuex";
+import Navbar from "@/components/Navbar";
+export default {
+  name: "app",
+  components: {
+    Navbar,
+  },
+  computed: {
+    ...mapGetters("drizzle", ["drizzleInstance", "isDrizzleInitialized"]),
+    ...mapGetters("contracts", ["getContractData"]),
+    // getNames() {
+    //   let data = this.getContractData({
+    //     contract: "Cert",
+    //     method: "getNames"
+    //   });
+    //   if (data === "loading") return false;
+    //   return data
+    // },
+    utils() {
+      return this.drizzleInstance.web3.utils
+    }
+  },
+  created() {
+    this.$store.dispatch("drizzle/REGISTER_CONTRACT", {
+      contractName: "Guestbook",
+      method: "getNames",
+      methodArgs: []
+    })
+  },
+  data(){
+    return {
+
+    }
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

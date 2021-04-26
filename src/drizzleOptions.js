@@ -1,4 +1,4 @@
-// From https://medium.com/@james.m.kehoe/building-a-guestbook-dapp-with-vue-js-and-truffle-e0c9e3fcdeeb
+// From https://github.com/trufflesuite/drizzle/blob/develop/packages/vue-plugin/README.md
 
 import CertificateIssuer from "@/contracts/CertificateIssuer.json";
 const options = {
@@ -6,17 +6,17 @@ const options = {
     block: false,
     fallback: {
       type: "ws",
-      url: "ws://127.0.0.1:9545"
+      url: "ws://127.0.0.1:7545"
     }
   },
 // The contracts to monitor
   contracts: [CertificateIssuer],
 //   events: {
-//     Guestbook: ["SignatureAdded"]
+//     CertificateIssuer: ["SignatureAdded"]
 //   },
-//   polls: {
-//     // check accounts ever 15 seconds
-//     accounts: 15000
-//   }
+  polls: {
+    // check accounts ever 15 seconds
+    accounts: 15000
+  }
 };
 export default options;
