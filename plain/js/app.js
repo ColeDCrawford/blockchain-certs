@@ -1,3 +1,4 @@
+var contract = require("@truffle/contract");
 App = {
   web3Provider: null,
   contracts: {},
@@ -54,6 +55,8 @@ App = {
     $.getJSON('CertificateIssuer.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with @truffle/contract
       var CertificateIssuerArtifact = data;
+      console.log('artifact');
+      console.log(CertificateIssuerArtifact);
       App.contracts.CertificateIssuer = TruffleContract(CertificateIssuerArtifact);
     
       // Set the provider for our contract
