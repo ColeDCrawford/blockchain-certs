@@ -1,0 +1,546 @@
+{
+	"compiler": {
+		"version": "0.8.1+commit.df193b15"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_issuerName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_certName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_certDesc",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_numCertCoursesRequired",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_certName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_certDesc",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_numCoursesRequired",
+						"type": "uint256"
+					}
+				],
+				"name": "addCertificateType",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "certTypeId",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_courseName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_courseDesc",
+						"type": "string"
+					}
+				],
+				"name": "addCourse",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "courseId",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_courseId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_studentAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_pass",
+						"type": "bool"
+					}
+				],
+				"name": "addEnrollment",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_studentAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_studentName",
+						"type": "string"
+					}
+				],
+				"name": "addStudent",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "certTypeIds",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "certificate_types",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "certificateName",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "certificateTypeId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "certificateDescription",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "numCoursesRequired",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "courseIds",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "courses",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "courseId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "courseName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "courseDescription",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "enrollments",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "enrollmentId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "studentAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "courseId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "pass",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllCertTypes",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "certificateName",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "certificateTypeId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "certificateDescription",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "numCoursesRequired",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct CertificateIssuer.CertificateType[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllCourses",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "courseId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "courseName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "courseDescription",
+								"type": "string"
+							}
+						],
+						"internalType": "struct CertificateIssuer.Course[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllStudentIds",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllStudents",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "studentAddress",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "studentName",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256[]",
+								"name": "enrollmentIds",
+								"type": "uint256[]"
+							},
+							{
+								"internalType": "uint256[]",
+								"name": "certificateIds",
+								"type": "uint256[]"
+							}
+						],
+						"internalType": "struct CertificateIssuer.Student[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "getCert",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "certificateId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "studentName",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "studentAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "certificateTypeId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "issuedDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "valid",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "issuerName",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_certificateTypeId",
+						"type": "uint256"
+					}
+				],
+				"name": "requestCert",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "certificateId",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "students",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "studentAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "studentName",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/CertificateIssuer.sol": "CertificateIssuer"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/CertificateIssuer.sol": {
+			"keccak256": "0x8a6e2b6a2a99ef4d218f10798c31596e0fe0aebe6e96511d6f77240013892a80",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://c61429bc1800908203648bc797f4d6ecc5815efa5a7359da4915c71c8bb7a5d9",
+				"dweb:/ipfs/QmPjNA7A8PRqoxfjXoTmXnoGa6jMj5kTVLCSGochdYRkLV"
+			]
+		}
+	},
+	"version": 1
+}
