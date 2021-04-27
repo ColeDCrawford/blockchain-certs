@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+// import { mapGetters } from "vuex";
 import Navbar from "@/components/Navbar";
 export default {
   name: "app",
@@ -23,8 +23,8 @@ export default {
     Navbar,
   },
   computed: {
-    ...mapGetters("drizzle", ["drizzleInstance", "isDrizzleInitialized"]),
-    ...mapGetters("contracts", ["getContractData"]),
+    // ...mapGetters("drizzle", ["drizzleInstance", "isDrizzleInitialized"]),
+    // ...mapGetters("contracts", ["getContractData"]),
     // getNames() {
     //   let data = this.getContractData({
     //     contract: "Cert",
@@ -33,16 +33,16 @@ export default {
     //   if (data === "loading") return false;
     //   return data
     // },
-    utils() {
-      return this.drizzleInstance.web3.utils
-    }
+    // utils() {
+    //   return this.drizzleInstance.web3.utils
+    // }
   },
   created() {
-    this.$store.dispatch("drizzle/REGISTER_CONTRACT", {
-      contractName: "Guestbook",
-      method: "getNames",
-      methodArgs: []
-    })
+    // this.$store.dispatch("drizzle/REGISTER_CONTRACT", {
+    //   contractName: "Guestbook",
+    //   method: "getNames",
+    //   methodArgs: []
+    // })
   },
   data(){
     return {

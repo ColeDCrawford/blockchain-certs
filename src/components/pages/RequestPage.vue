@@ -17,7 +17,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "RequestPage",
+  computed: {
+    ...mapGetters("drizzle", ["drizzleInstance", "isDrizzleInitialized"]),
+    ...mapGetters("contracts", ["getContractData"]),
+    ...mapGetters("accounts", ["activeAccount", "activeBalance"]),
+  }
 };
 </script>
