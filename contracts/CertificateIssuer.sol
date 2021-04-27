@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.7.0;
-pragma experimental ABIEncoderV2;
+// pragma solidity ^0.7.0;
+// pragma experimental ABIEncoderV2;
+pragma solidity ^0.8.0;
 // Using the new ABI coder which can return arrays of structs
 
 contract CertificateIssuer {
@@ -14,6 +15,12 @@ contract CertificateIssuer {
     mapping(address => Student) public students;
     
     // need to track the ids for things somewhere, can't get keys from mappings
+    uint[] public certTypeIds;
+    uint[] public courseIds;
+    uint[] private certIds;
+    uint[] private enrollmentIds;
+    address[] private studentAddresses;
+
     
     uint private certCount = 1;
     uint private certTypeCount = 1;
@@ -50,6 +57,7 @@ contract CertificateIssuer {
         uint certTypeId = getCertTypeId();
         CertificateType memory certType = CertificateType(_certName, certTypeId, _certDesc, _numCertCoursesRequired);
         certificate_types[certTypeId] = certType;
+        certTypeIds.push(certTypeId);
         
         owner = msg.sender;
         issuerName = _issuerName;
@@ -149,6 +157,7 @@ contract CertificateIssuer {
         uint[] memory tempEIds;
         uint[] memory tempCertIds;
         Student memory tempStudent = Student(_studentAddress, _studentName, tempEIds, tempCertIds);
+        studentAddresses.push(_studentAddress);
         students[_studentAddress] = tempStudent;
         return true;
     }
@@ -157,6 +166,7 @@ contract CertificateIssuer {
         courseId = getCourseId();
         Course memory tempCourse = Course(courseId, _courseName, _courseDesc);
         courses[courseId] = tempCourse;
+        courseIds.push(courseId);
         return courseId;
     }
     
@@ -169,6 +179,7 @@ contract CertificateIssuer {
         Enrollment memory tempEnrollment = Enrollment(enrollmentId, _studentAddress, _courseId, _pass);
         enrollments[enrollmentId] = tempEnrollment;
         students[_studentAddress].enrollmentIds.push(enrollmentId);
+        enrollmentIds.push(enrollmentId);
     }
     
     function studentEnrollmentAlreadyExists(uint _courseId, address _studentAddress) private view returns (bool exists){
@@ -189,8 +200,45 @@ contract CertificateIssuer {
         certTypeId = getCertTypeId();
         CertificateType memory certType = CertificateType(_certName, certTypeId, _certDesc, _numCoursesRequired);
         certificate_types[certTypeId] = certType;
+        certTypeIds.push(certTypeId);
         return certTypeId;
     }
+
+    function getAllStudentIds() public view onlyOwner returns (address [] memory){
+        return studentAddresses;
+    }
+
+    function getAllStudents() public view onlyOwner returns (Student [] memory){
+        Student[] memory studentArr = new Student[](studentAddresses.length);
+        for(uint i = 0; i < studentAddresses.length; i++){
+            Student memory s = students[studentAddresses[i]];
+            studentArr[i] = s;
+        }
+        return studentArr;
+    }
+
+    function getAllCertTypes() public view returns (CertificateType [] memory){
+        CertificateType[] memory certArr = new CertificateType[](certTypeIds.length);
+        for(uint i = 0; i < certTypeIds.length; i++){
+            CertificateType memory c = certificate_types[certTypeIds[i]];
+            certArr[i] = c;
+        }
+        return certArr;
+    }
+
+    function getAllCourses() public view returns (Course [] memory){
+        Course[] memory courseArr = new Course[](courseIds.length);
+        for(uint i = 0; i < courseIds.length; i++){
+            Course memory c = courses[courseIds[i]];
+            courseArr[i] = c;
+        }
+        return courseArr;
+    }
+
+    function getAllCourseIds() public view returns (uint [] memory){
+        return courseIds;
+    }
+
     
     // function getStudentEnrollmentIds(address _address) public view returns(uint [] memory){
     //     return students[_address].enrollmentIds;
