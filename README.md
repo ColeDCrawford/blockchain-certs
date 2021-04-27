@@ -7,11 +7,13 @@ The project uses
 - Solidity
 - Truffle
 - Ganache
-- `@drizzle/vue-plugin`
+- Drizzle Vue Plugin: `@drizzle/vue-plugin`
 - Vue
+- `vue-bootstrap`
 
 ## Resources
 - [Blog post on integrating Vue and Truffle](https://medium.com/@james.m.kehoe/building-a-guestbook-dapp-with-vue-js-and-truffle-e0c9e3fcdeeb)
+- [Example vue-drizzle app](https://github.com/remote-gildor/vue-drizzle-crowdsale). The `vue-drizzle` plugin is a major pain and doesn't maintain state very well - trying to use the Vuex state pattern followed here instead ...
 
 ## Project setup
 ```
