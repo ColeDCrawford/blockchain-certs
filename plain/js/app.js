@@ -67,16 +67,18 @@ App = {
         App.store.issuerName = data;
       });
 
-      // Larger loads
+      // console.log("test enrollment retrieval");
+      // certIssuerInstance.enrollments.call(1).then(function(d){
+      //   console.log(d);
+      //   console.log(d.courseId.toString());
+      // })
+
+      // Larger loads which can change
+      App.loadCertificateData();
       App.loadCourseData();
       App.loadStudentData();
       App.loadCertificateTypeData();
-      // certIssuerInstance.getAllCertTypes.call().then(function(data){
-      //   App.store.certificateTypes = data;
-      // });
-      // certIssuerInstance.getAllStudents.call().then(function(data){
-      //   App.store.students = data;
-      // })
+      App.loadEnrollmentData();
 
       // Not actually using this - is there a better way to make this function wait for all the async calls to contract to load?
       return certIssuerInstance.getAllCourses.call();
@@ -87,13 +89,8 @@ App = {
       $('#ownerAddress').text(App.store.ownerAddress);
       $('#issuerName').text(App.store.issuerName);
 
-      console.log(App.isOwner());
-      console.log(App.store.ownerAddress);
-      console.log(App.store.userAccount);
-      if(App.isOwner()){
-        $('.ownerOnly').toggle();
-      }
-
+      // Runs every .5s
+      App.checkAdminVis();
     });
   },
 
@@ -122,14 +119,35 @@ App = {
       certIssuerInstance.getAllStudents.call().then(function(data){
         App.store.students = data;
 
-        // Wipe current data, then rebuild
         $('#students').empty();
 
-        // Verify owner
         App.store.students.forEach(function(s){
+          console.log(s);
           var studentTemplate = $('#studentTemplate');
-          studentTemplate.find('.studentName').text(s.name);
-          studentTemplate.find('.studentAddress').text(s.address);
+          studentTemplate.find('.studentName').text(s.studentName);
+          studentTemplate.find('.studentAddress').text(s.studentAddress);
+          studentTemplate.find('.studentEnrollments').text(s.enrollmentIds.length);
+          // append all certs
+          studentCerts = [];
+          s.certificateIds.forEach(function(certId){
+            App.store.certificates.forEach(function(cert){
+              if(certType.certificateId == certId){
+                //find the cert tpye
+                App.store.certificateTypes.forEach(function(type){
+                  if(type.certificateTypeId == cert.certificateTypeId){
+                    studentCerts.append({
+                      cert: cert,
+                      certType: type
+                    })
+                  }
+                })
+              }
+            })
+          });
+          s.certificates = studentCerts;
+          studentCerts.forEach(function(cert){
+            studentTemplate.find('.studentCertificates').append(`<li>${cert.certType.certificateName}</li>`);
+          });
           $('#students').append(studentTemplate.html());
         })
       })
@@ -155,10 +173,63 @@ App = {
     })
   },
 
+  loadCertificateData: function(){
+    App.contracts.CertificateIssuer.deployed().then(function(instance){
+      certIssuerInstance = instance;
+      certIssuerInstance.getAllCertificates.call().then(function(data){
+        App.store.certificates = data;
+      })
+    })
+  },
+
+  loadEnrollmentData: function(){
+    App.contracts.CertificateIssuer.deployed().then(function(instance){
+      certIssuerInstance = instance;
+      certIssuerInstance.getAllEnrollments.call().then(function(data){
+        console.log("Enrollments");
+        console.log(data);
+        App.store.enrollments = data;
+        $('#enrollments').empty();
+        App.store.enrollments.forEach(function(e){
+          var enrollmentTemplate = $('#enrollmentTemplate');
+          enrollmentTemplate.find('.enrollmentId').text(e.enrollmentId);
+          enrollmentTemplate.find('.enrollmentStudentAddress').text(e.studentAddress);
+          enrollmentTemplate.find('.enrollmentCourseId').text(e.courseId);
+          enrollmentTemplate.find('.enrollmentPass').text(e.pass);
+          $('#enrollments').append(enrollmentTemplate.html());
+        })
+      })
+    })
+  },
+
+  requestCertificate: function(certTypeId){
+    App.contracts.CertificateIssuer.deployed().then(function(instance){
+      certIssuerInstance = instance;
+      let certCostEther = "1";
+      let certCostWei = web3.utils.toWei(certCostEther, 'ether');
+      console.log(`certCostWei ${certCostWei}`);
+      return certIssuerInstance.requestCert(certTypeId, {
+        from: App.store.userAccount,
+        value: certCostWei
+      });
+    }).then(function(tx){
+      console.log(tx);
+      // Do some sort of congrats here
+    }).catch(function(err){
+      console.log(err.message);
+    })
+  },
+
+  validateCertificate: function(){
+
+  },
+
   bindEvents: function() {
     $(document).on('click', '#addCourse', App.handleAddCourse);
     $(document).on('click', '#addStudent', App.handleAddStudent);
     $(document).on('click', '#addCertType', App.handleAddCertificateType);
+    $(document).on('click', '#addEnrollment', App.handleAddEnrollment);
+    $(document).on('click', '#requestCert', App.handleRequestCertificate);
   },
 
   addCourse: function(name, desc){
@@ -167,9 +238,9 @@ App = {
       certIssuerInstance = instance;
       return certIssuerInstance.addCourse(name, desc, {from: App.store.userAccount});
     }).then(function(tx){
-      // could try to just add the new one?
       console.log(tx);
       App.loadCourseData();
+      $("#courseForm").trigger("reset");
     }).catch(function(err){
       console.log(err.message);
     });
@@ -177,12 +248,14 @@ App = {
 
   addStudent: function(address, name){
     App.contracts.CertificateIssuer.deployed().then(function(instance){
-      // Need to see if the contract owner is the sender?
       certIssuerInstance = instance;
       return certIssuerInstance.addStudent(address, name, {from: App.store.userAccount});
     }).then(function(tx){
       console.log(tx);
       App.loadStudentData();
+      $("#studentForm").trigger("reset");
+    }).catch(function(err){
+      console.log(err.message);
     });
   },
 
@@ -193,7 +266,23 @@ App = {
     }).then(function(tx){
       console.log(tx);
       App.loadCertificateTypeData();
-    })
+      $("#certTypeForm").trigger("reset");
+    }).catch(function(err){
+      console.log(err.message);
+    });
+  },
+
+  addEnrollment: function(courseId, studentAddress, pass){
+    App.contracts.CertificateIssuer.deployed().then(function(instance){
+      certIssuerInstance = instance;
+      return certIssuerInstance.addEnrollment(courseId, studentAddress, pass, {from: App.store.userAccount});
+    }).then(function(tx){
+      console.log(tx);
+      $("#enrollmentForm").trigger("reset");
+      App.loadEnrollmentData();
+    }).catch(function(err){
+      console.log(err.message);
+    });
   },
 
   setAccount: function(){
@@ -225,8 +314,36 @@ App = {
     App.addCertificateType(name, desc, numCoursesRequired);
   },
 
+  handleAddEnrollment: function(event){
+    event.preventDefault();
+    let studentAddress = $('#enrollStudentAddress').val();
+    let courseId = $('#enrollCourseId').val();
+    let pass = $('#enrollmentPass').is(':checked');
+    App.addEnrollment(courseId, studentAddress, pass);
+  },
+
+  handleRequestCertificate: function(event){
+    event.preventDefault();
+    let certId = $('#certIdInput').val();
+    App.requestCertificate(certId);
+  },
+
   isOwner: function(){
     return App.store.ownerAddress == App.store.userAccount;
+  },
+
+  checkAdminVis: function(){
+    // every .5s, check if the user account has changed
+    let intervalId = setInterval(function(){
+      App.setAccount();
+      if(App.isOwner()){
+        $('.ownerOnly').show();
+      } else {
+        $('.ownerOnly').hide();
+      }
+    }, 500);
+    App.store.intervalId = intervalId;
+    return intervalId;
   }
 
 };

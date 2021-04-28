@@ -11,7 +11,7 @@ contract CertificateIssuer {
     mapping(uint => Certificate) private issued_certificates;
     mapping(uint => CertificateType) public certificate_types;
     mapping(uint => Course) public courses;
-    mapping(uint => Enrollment) public enrollments;
+    mapping(uint => Enrollment) private enrollments;
     mapping(address => Student) public students;
     
     // need to track the ids for things somewhere, can't get keys from mappings
@@ -140,20 +140,14 @@ contract CertificateIssuer {
         return valid;
     }
     
-    // Can't return structs in external functions in Solidity - decompose it
-    function getCert(uint id) public view returns (
-        uint certificateId,
-        string memory studentName,
-        address studentAddress,
-        uint certificateTypeId,
-        uint issuedDate,
-        bool valid
-     ){
+    function getCert(uint id) public view returns (Certificate memory){
         Certificate memory cert = issued_certificates[id];
-        return(cert.certificateId, cert.studentName, cert.studentAddress, cert.certificateTypeId, cert.issuedDate, cert.valid);
+        return(cert);
     }
     
     function addStudent(address _studentAddress, string calldata _studentName) public onlyOwner returns (bool success){
+        Student memory checkStudent = students[_studentAddress];
+        require(bytes(checkStudent.studentName).length == 0, "This student address has already been registered");
         uint[] memory tempEIds;
         uint[] memory tempCertIds;
         Student memory tempStudent = Student(_studentAddress, _studentName, tempEIds, tempCertIds);
@@ -239,9 +233,26 @@ contract CertificateIssuer {
         return courseIds;
     }
 
-    
-    // function getStudentEnrollmentIds(address _address) public view returns(uint [] memory){
-    //     return students[_address].enrollmentIds;
-    // }
+    function getAllEnrollments() public view onlyOwner returns (Enrollment [] memory){
+        Enrollment[] memory enrollArr = new Enrollment[](enrollmentIds.length);
+        for(uint i= 0; i < enrollmentIds.length; i++){
+            Enrollment memory e = enrollments[enrollmentIds[i]];
+            enrollArr[i] = e;
+        }
+        return enrollArr;
+    }
+
+    function getEnrollment(uint enrollmentId) public view onlyOwner returns(Enrollment memory){
+        return enrollments[enrollmentId];
+    }
+
+    function getAllCertificates() public view onlyOwner returns(Certificate [] memory){
+        Certificate[] memory certArr = new Certificate[](certIds.length);
+        for(uint i=0; i < certIds.length; i++){
+            Certificate memory c = issued_certificates[certIds[i]];
+            certArr[i] = c;
+        }
+        return certArr;
+    }
     
 }

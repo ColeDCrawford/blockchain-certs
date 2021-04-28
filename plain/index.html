@@ -16,7 +16,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1 class="text-center">Certificate Issuer</h1>
+          <h1 class="text-center header">Certificate Issuer</h1>
         </div>
       </div>
       <div class="row">
@@ -30,29 +30,200 @@
           </div>
       </div>
       <div class="row" id="cert-type-container">
-          <h2>Certificates Offered</h2>
-          <div class="row" id="certificateTypes">
-            
+          <div class="col-md-12">
+            <h2>Certificates Offered</h2>
+            <div class="row" id="certificateTypes">
+              
+            </div>
           </div>
       </div>
       <div class="row" id="course-container">
-          <h2>Courses Offered</h2>
-          <div class="row" id="courses">
-
+          <div class="col-md-12">
+            <h2>Courses Offered</h2>
+            <div class="row" id="courses">
+  
+            </div>
           </div>
       </div>
-      <div class="row ownerOnly" id="student-container" >
-          <h2>Registered Students</h2>
-          <div class="row" id="students">
-
+      <div class="row" id="requestCertificate">
+          <div class="col-md-12">
+            <h2>For Students</h2>
+            <h3>Request a Certificate</h3>
+            <p>Students may request a certificate by entering the certificate ID.
+                The smart contract will check the student's address and ensure the student is eligible to receive the certificate, based on the number of courses they have successfully passed.
+                The cost of the certificate is 1Ξ, paid by the student. Make sure to send the request from the right address!
+            </p>
+            <form id="certForm">
+                <div class="form-group">
+                    <label for="certIdInput">Certificate Type ID</label>
+                    <input type="text" class="form-control" id="certIdInput">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2" id="requestCert">Request Cert (1Ξ)</button>
+            </form>
           </div>
       </div>
+      
+      <div class="row" id="validateCertificate">
+          <div class="col-md-12">
+            <h2>For Employers and Institutions</h2>
+          <h3>Validate a Credential</h3>
+          <p>Enter a unique credential ID here to validate that the credential is legitimate.</p>
+          </div>
+      </div>
+
+      <!-- Admin Only-->
+      <div class="row ownerOnly" id="admin">
+        <div class="col-md-12">
+            <h2>Admin Functions</h2>
+            <div id="accordion">
+                <div class="card" id="student-container">
+                    <div class="card-header" id="student-container-title">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#student-container-content" aria-expanded="false" aria-controls="student-container-content">
+                              View Registered Students
+                            </button>
+                          </h5>
+                    </div>
+                    <div id="student-container-content" class="collapse-show collapse" aria-labelledby="student-container-title" data-parent="#accordion">
+                        <div class="card-body" id="students">
+
+                        </div>
+                    </div> 
+                </div>
+                
+                <div class="card" id="enrollment-container">
+                    <div class="card-header" id="enrollment-container-title">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#enrollment-container-content" aria-expanded="false" aria-controls="enrollment-container-content">
+                                View Enrollment Records
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="enrollment-container-content" class="collapse-show collapse" aria-labelledby="enrollment-container-title" data-parent="#accordion">
+                        <div class="card-body" id="enrollments">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="addCourseContainer">
+                    <div class="card-header" id="add-course-container-title">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#addCourseContainerContent" aria-expanded="false" aria-controls="addCourseContainerContent">
+                                Create New Course
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="addCourseContainerContent" class="collapse-show collapse" aria-labelledby="add-course-container-title" data-parent="#accordion">
+                        <div class="card-body">
+                            <form id="courseForm">
+                                <div class="form-group">
+                                  <label for="courseNameInput">Course Name</label>
+                                  <input type="text" class="form-control" id="courseNameInput" placeholder="Intro to Python">
+                                </div>
+                                <div class="form-group">
+                                    <label for="courseDescInput">Course Description</label>
+                                    <textarea class="form-control" id="courseDescInput" placeholder="This course ..." rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2" id="addCourse">Add Course</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="addStudentContainer">
+                    <div class="card-header" id="addStudentContainerTitle">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#addStudentContainerContent" aria-expanded="false" aria-controls="addStudentContainerContent">
+                                Create New Student
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="addStudentContainerContent" class="collapse-show collapse" aria-labelledby="addStudentContainerTitle" data-parent="#accordion">
+                        <div class="card-body">
+                            <form id="studentForm">
+                                <div class="form-group">
+                                  <label for="studentNameInput">Student Name</label>
+                                  <input type="text" class="form-control" id="studentNameInput" placeholder="Cole Crawford">
+                                </div>
+                                <div class="form-group">
+                                    <label for="studentAddressInput">Student Address</label>
+                                    <input type="text" class="form-control" id="studentAddressInput" placeholder="0x97F9F711A43...">
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2" id="addStudent">Add Student</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="addCertTypeContainer">
+                    <div class="card-header" id="addCertTypeContainerTitle">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#addCertTypeContainerContent" aria-expanded="false" aria-controls="addCertTypeContainerContent">
+                                Create New Certificate Type
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="addCertTypeContainerContent" class="collapse-show collapse" aria-labelledby="addCertTypeContainerTitle" data-parent="#accordion">
+                        <div class="card-body">
+                            <form id="certTypeForm">
+                                <div class="form-group">
+                                  <label for="certTypeNameInput">Certificate Type Name</label>
+                                  <input type="text" class="form-control" id="certTypeNameInput" placeholder="Graduate Certificate in ...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="certTypeDescInput">Certificate Type Description</label>
+                                    <textarea class="form-control" id="certTypeDescInput" placeholder="A certificate which ..." rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certTypeNumCoursesRequired">Number of Courses Required:</label>
+                                    <input type="number" min="1" class="form-control" id="certTypeNumCoursesRequired" placeholder="3">
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2" id="addCertType">Create New Certificate Type</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="addEnrollmentContainer">
+                    <div class="card-header" id="addEnrollmentContainerTitle">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#addEnrollmentContainerContent" aria-expanded="false" aria-controls="addEnrollmentContainerContent">
+                                Add Enrollment Record
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="addEnrollmentContainerContent" class="collapse-show collapse" aria-labelledby="addEnrollmentContainerTitle" data-parent="#accordion">
+                        <div class="card-body">
+                            <form id="enrollmentForm">
+                                <div class="form-group">
+                                    <label for="enrollStudentAddr">Student Address</label>
+                                    <input type="text" class="form-control" id="enrollStudentAddress" placeholder="0x97F9F711A43...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="enrollCourseId">Course Id</label>
+                                    <input type="text" class="form-control" id="enrollCourseId">
+                                </div>
+                                <div class="form-group">
+                                    <input checked type="checkbox" id="enrollmentPass">
+                                    <label for="enrollmentPass">Passed?</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2" id="addEnrollment">Add Enrollment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
       <div class="row ownerOnly" id="enrollment-container">
           <h2>Enrollments</h2>
           <div class="row" id="enrollments">
 
           </div>
       </div>
+
       <div class="row ownerOnly" id="addCourseContainer">
           <h2>Add a Course</h2>
           <form id="courseForm">
@@ -62,7 +233,7 @@
             </div>
             <div class="form-group">
                 <label for="courseDescInput">Course Description</label>
-                <input type="text" class="form-control" id="courseDescInput" placeholder="a description ...">
+                <textarea class="form-control" id="courseDescInput" placeholder="This course ..." rows="3"></textarea>
             </div>
             <button type="submit" class="btn btn-primary mb-2" id="addCourse">Add Course</button>
         </form>
@@ -76,7 +247,7 @@
           </div>
           <div class="form-group">
               <label for="studentAddressInput">Student Address</label>
-              <input type="text" class="form-control" id="studentAddressInput" placeholder="0x97F9F711A43f69E05ea67700BF91b1c9B02400aA">
+              <input type="text" class="form-control" id="studentAddressInput" placeholder="0x97F9F711A43...">
           </div>
           <button type="submit" class="btn btn-primary mb-2" id="addStudent">Add Student</button>
       </form>
@@ -90,7 +261,7 @@
           </div>
           <div class="form-group">
               <label for="certTypeDescInput">Certificate Type Description</label>
-              <input type="text" class="form-control" id="certTypeDescInput" placeholder="A certificate which ...">
+              <textarea class="form-control" id="certTypeDescInput" placeholder="A certificate which ..." rows="3"></textarea>
           </div>
           <div class="form-group">
               <label for="certTypeNumCoursesRequired">Number of Courses Required:</label>
@@ -99,23 +270,53 @@
           <button type="submit" class="btn btn-primary mb-2" id="addCertType">Create New Certificate Type</button>
       </form>
     </div>
+    <div class="row ownerOnly" id="addEnrollmentContainer">
+        <h2>Add an Enrollment Record</h2>
+        <form id="enrollmentForm">
+            <div class="form-group">
+                <label for="enrollStudentAddr">Student Address</label>
+                <input type="text" class="form-control" id="enrollStudentAddress" placeholder="0x97F9F711A43...">
+            </div>
+            <div class="form-group">
+                <label for="enrollCourseId">Course Id</label>
+                <input type="text" class="form-control" id="enrollCourseId">
+            </div>
+            <div class="form-group">
+                <input checked type="checkbox" id="enrollmentPass">
+                <label for="enrollmentPass">Passed?</label>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" id="addEnrollment">Add Enrollment</button>
+        </form>
     </div>
   </div>
 
+    <!-- Templates -->
     <div id="certificateTypeTemplate" style="display:none">
         <div class="col-md-6">
-            <h4 class="certificateName"></h4>
-            <p class="certificateDescription"></p>
-            <p>Id: <span class="certificateTypeId"></span></p>
-            <p>Number of Courses Required: <span class="numCoursesRequired"></span></p>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="certificateName card-title"></h4>
+                    <p class="certificateDescription card-text"></p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID: <span class="certificateTypeId"></span></li>
+                        <li class="list-group-item">Number of courses required: <span class="numCoursesRequired"></span></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="courseTemplate" style="display:none">
         <div class="col-md-6">
-            <h4 class="courseName"></h4>
-            <p class="courseDescription"></p>
-            <p>Id: <span class="courseId"></span></p>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="courseName card-title"></h4>
+                    <p class="courseDescription card-text"></p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: <span class="courseId"></span></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -123,8 +324,24 @@
         <div class="col-md-6">
             <h4 class="studentName"></h4>
             <p class="studentAddress"></p>
+            <div>
+                <h4>Certificates</h4>
+                <ul class="studentCertificates"></ul>
+            </div>
+            <p>Enrollments: <span class="studentEnrollments"></span></p>
         </div>
     </div>
+
+    <div id="enrollmentTemplate" style="display:none">
+        <div class="col-md-6">
+            <h4>Enrollment <span class="enrollmentId"></span></h4>
+            <p>Student <span class="enrollmentStudentAddress"></span> - 
+                Course <span class="enrollmentCourseId"></span> -
+                <span class="enrollmentPass"></span>
+            </p>
+        </div>
+    </div>
+    <!-- End Templates -->
 
     <!-- Bootstrap files including jQuery - not slim, need Ajax -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -137,6 +354,5 @@
     <!-- this is generated by browserify; it bundles the `require`d @truffle-contract with the app.js code-->
     <script src="js/app-bundle.js"></script>
 
-    <!-- <script src="js/app.js"></script> -->
   </body>
 </html>
