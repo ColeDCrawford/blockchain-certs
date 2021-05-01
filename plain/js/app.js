@@ -70,7 +70,7 @@ App = {
         App.store.issuerName = data;
       });
 
-      // Larger loads which can change
+      // Larger data loads which can change - use methods
       App.loadCertificateTypeData();
       App.loadCertificateData();
       App.loadCourseData();
@@ -94,7 +94,6 @@ App = {
     App.contracts.CertificateIssuer.deployed().then(function(instance){
       certIssuerInstance = instance;
       certIssuerInstance.getAllCourses.call().then(function(data){
-        //App.store.courses = data;
         // data manipulation
         data.forEach(function(course){
           let objCourse = Object.assign({}, course);
@@ -103,7 +102,6 @@ App = {
 
         // view
         $('#courses').empty();
-        // App.store.courses.forEach(function(c){ // use keys instead
         for (const [key, c] of Object.entries(App.store.courses)) {
           var courseTemplate = $('#courseTemplate').clone();
           courseTemplate.find('.courseName').text(c.courseName);
@@ -127,7 +125,6 @@ App = {
 
         $('#students').empty();
 
-        // App.store.students.forEach(function(s){
         for (const [key, s] of Object.entries(App.store.students)) {
           var studentTemplate = $('#studentTemplate').clone();
           studentTemplate.find('.studentName').text(s.studentName);
@@ -139,20 +136,6 @@ App = {
           s.certificateIds.forEach(function(certId){
             let cert = Object.assign({}, App.store.certificates[certId]);
             studentCerts[certId] = cert;
-            // OLD LOGIC before using object to store certs
-            // App.store.certificates.forEach(function(cert){
-            //   if(certType.certificateId == certId){
-            //     //find the cert tpye
-            //     App.store.certificateTypes.forEach(function(type){
-            //       if(type.certificateTypeId == cert.certificateTypeId){
-            //         studentCerts.append({
-            //           cert: cert,
-            //           certType: type
-            //         })
-            //       }
-            //     })
-            //   }
-            // })
           });
 
           s.certificates = studentCerts;
@@ -166,7 +149,6 @@ App = {
           s.enrollments = studentEnrollments;
 
           for (const [key, cert] of Object.entries(s.certificates)) {
-          // studentCerts.forEach(function(cert){
             studentTemplate.find('.studentCertificates').append(`<li>${cert.certificateName}</li>`);
           };
           $('#students').append(studentTemplate.html());
@@ -179,14 +161,12 @@ App = {
     App.contracts.CertificateIssuer.deployed().then(function(instance){
       certIssuerInstance = instance;
       certIssuerInstance.getAllCertTypes.call().then(function(data){
-        // App.store.certificateTypes = data;
         data.forEach(function(certType){
           let objCertType = Object.assign({}, certType);
           App.store.certificateTypes[certType.certificateTypeId] = objCertType;
         });
 
         $('#certificateTypes').empty();
-        // App.store.certificateTypes.forEach(function(t){
         for (const [key, t] of Object.entries(App.store.certificateTypes)) {
           var certTypeTemplate = $('#certificateTypeTemplate').clone();
           certTypeTemplate.find('.certificateName').text(t.certificateName);
@@ -203,8 +183,6 @@ App = {
     App.contracts.CertificateIssuer.deployed().then(function(instance){
       certIssuerInstance = instance;
       certIssuerInstance.getAllCertificates.call().then(function(data){
-        // console.log(data);
-        // App.store.certificates = data;
         if(data.length > 0){
           data.forEach(function(c){
             let certType = App.store.certificateTypes[c.certificateTypeId];
@@ -233,14 +211,12 @@ App = {
     App.contracts.CertificateIssuer.deployed().then(function(instance){
       certIssuerInstance = instance;
       certIssuerInstance.getAllEnrollments.call().then(function(data){
-        // App.store.enrollments = data;
         data.forEach(function(enrollment){
           let objEnrollment = Object.assign({}, enrollment);
           App.store.enrollments[enrollment.enrollmentId] = objEnrollment;
         })
 
         $('#enrollments').empty();
-        // App.store.enrollments.forEach(function(e){
         for (const [key, e] of Object.entries(App.store.enrollments)) {
           var enrollmentTemplate = $('#enrollmentTemplate').clone();
           enrollmentTemplate.find('.enrollmentId').text(e.enrollmentId);
@@ -442,10 +418,6 @@ App = {
     // every .5s, check if the user account has changed
     let intervalId = setInterval(function(){
       // current Account is set by checkStudentVis
-      // let currentAccount = App.store.userAccount;
-      // App.setAccount();
-      // let changed = (currentAccount != App.store.userAccount);
-
       if(App.isOwner()){
         $('.ownerOnly').show();
       } else {
@@ -461,9 +433,6 @@ App = {
     let intervalId = setInterval(function(){
       // let currentAccount = App.store.userAccount;
       App.setAccount();
-      // let newAccount = App.store.userAccount;
-      // console.log(`${currentAccount} - ${newAccount}`);
-      // let changed = (currentAccount != newAccount);
 
       // this should only trigger if student status has changed
       if(App.isStudent() && (App.store.accountChanged || !App.store.initialized)){
@@ -471,13 +440,6 @@ App = {
         // set the student data
         App.store.initialized = true;
         App.store.studentData = App.store.students[App.store.userAccount];
-        // // Object filtering: https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
-        // let studentCerts = Object.keys(App.store.certificates)
-        //   .filter(key => studentData.certificateIds.includes(key))
-        //   .reduce((obj, key) => {
-        //     obj[key] = App.store.certificates[key];
-        //     return obj;
-        //   }, {});
 
         $('.studentInfoField').empty();
         $('.studentInfoName').html(App.store.studentData.studentName);
