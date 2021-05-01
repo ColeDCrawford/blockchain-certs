@@ -7,9 +7,11 @@ The project uses
 - Solidity
 - Truffle
 - Ganache
-- [Truffle Contract (NPM package version)](https://www.npmjs.com/package/@truffle/contract); this is bundled using `browserify`, a package which bundles NPM packages for use by vanilla JS projects without a full build system.
+- [Truffle Contract (NPM package version)](https://www.npmjs.com/package/@truffle/contract)
+- `browserify`, a package which bundles NPM packages (here, `@truffle/contract`) for use by vanilla JS projects without a full build system. It generates `app-bundle.js` which is then loaded by the SPA. Running `browserify app.js > app-bundle.js` in the `src/js` directory will rebundle things.
 - Bootstrap 4
 - jQuery 3
+- `lite-server`
 
 ## Resources
 I looked at a lot of things when I originally tried using Drizzle / Vue and the Vue-Drizzle plugin, but that plugin did a terrible job of maintaining state and obscured a lot of the Web3 functionality so I couldn't write my own state management with those functions. Besides looking up some Javascript syntax and Bootstrap snippets I wrote this version from scratch.
