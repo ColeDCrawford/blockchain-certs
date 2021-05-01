@@ -41,9 +41,6 @@ App = {
       App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
     }
     web3 = new Web3(App.web3Provider);
-
-    console.log(web3.version);
-
     return App.initContract();
   },
 
@@ -51,15 +48,11 @@ App = {
     $.getJSON('CertificateIssuer.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with @truffle/contract
       var CertificateIssuerArtifact = data;
-      console.log('artifact');
-      console.log(CertificateIssuerArtifact);
       App.contracts.CertificateIssuer = TruffleContract(CertificateIssuerArtifact);
     
       // Set the provider for our contract
       App.contracts.CertificateIssuer.setProvider(App.web3Provider);
-      
       App.setAccount();
-    
       return App.loadContractData();
     });
 
@@ -70,8 +63,6 @@ App = {
     var certIssuerInstance;
     App.contracts.CertificateIssuer.deployed().then(function(instance){
       certIssuerInstance = instance;
-      console.log(certIssuerInstance);
-
       certIssuerInstance.owner.call().then(function(data){
         App.store.ownerAddress = data;
       })
@@ -89,8 +80,6 @@ App = {
       return certIssuerInstance.getAllCourses.call();
     }).then(function(courses){
       // Populate with contract data
-      console.log('populating templates');
-
       $('#ownerAddress').text(App.store.ownerAddress);
       $('#issuerName').text(App.store.issuerName);
 
@@ -117,7 +106,6 @@ App = {
         // App.store.courses.forEach(function(c){ // use keys instead
         for (const [key, c] of Object.entries(App.store.courses)) {
           var courseTemplate = $('#courseTemplate').clone();
-          console.log(c);
           courseTemplate.find('.courseName').text(c.courseName);
           courseTemplate.find('.courseId').text(c.courseId);
           courseTemplate.find('.courseDescription').text(c.courseDescription);
@@ -141,7 +129,6 @@ App = {
 
         // App.store.students.forEach(function(s){
         for (const [key, s] of Object.entries(App.store.students)) {
-          console.log(s);
           var studentTemplate = $('#studentTemplate').clone();
           studentTemplate.find('.studentName').text(s.studentName);
           studentTemplate.find('.studentAddress').text(s.studentAddress);
@@ -202,7 +189,6 @@ App = {
         // App.store.certificateTypes.forEach(function(t){
         for (const [key, t] of Object.entries(App.store.certificateTypes)) {
           var certTypeTemplate = $('#certificateTypeTemplate').clone();
-          console.log(t);
           certTypeTemplate.find('.certificateName').text(t.certificateName);
           certTypeTemplate.find('.certificateDescription').text(t.certificateDescription);
           certTypeTemplate.find('.certificateTypeId').text(t.certificateTypeId);
@@ -222,15 +208,10 @@ App = {
         if(data.length > 0){
           data.forEach(function(c){
             let certType = App.store.certificateTypes[c.certificateTypeId];
-            console.log('enhancing cert data');
-            console.log(c);
-            console.log(certType);
-            console.log(certType.certificateName);
             let cert = Object.assign({}, c);
             cert["certificateName"] = certType.certificateName;
             cert["certficateDescription"] = certType.certificateDescription;
             App.store.certificates[cert.certificateId] = cert;
-            console.log(cert);
           });
 
           $('#certs').empty();
@@ -252,8 +233,6 @@ App = {
     App.contracts.CertificateIssuer.deployed().then(function(instance){
       certIssuerInstance = instance;
       certIssuerInstance.getAllEnrollments.call().then(function(data){
-        console.log("Enrollments");
-        console.log(data);
         // App.store.enrollments = data;
         data.forEach(function(enrollment){
           let objEnrollment = Object.assign({}, enrollment);
@@ -279,7 +258,6 @@ App = {
       certIssuerInstance = instance;
       let certCostEther = "1";
       let certCostWei = web3.utils.toWei(certCostEther, 'ether');
-      console.log(`certCostWei ${certCostWei}`);
       return certIssuerInstance.requestCert(certTypeId, {
         from: App.store.userAccount,
         value: certCostWei
@@ -358,7 +336,6 @@ App = {
       App.loadCourseData();
       $("#courseForm").trigger("reset");
     }).catch(function(err){
-      
       console.log(err.message);
     });
   },
