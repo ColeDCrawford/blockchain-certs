@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="./css/app.css">
   </head>
   <body>
-    <div class="container">
+    <div class="container" id="main">
+
       <div class="row">
         <div class="col-md-12">
           <h1 class="text-center header">Certificate Issuer</h1>
@@ -29,26 +30,11 @@
             </div>
           </div>
       </div>
-      <div class="row" id="cert-type-container">
-          <div class="col-md-12">
-            <h2>Certificates Offered</h2>
-            <div class="row" id="certificateTypes">
-              
-            </div>
-          </div>
-      </div>
-      <div class="row" id="course-container">
-          <div class="col-md-12">
-            <h2>Courses Offered</h2>
-            <div class="row" id="courses">
-  
-            </div>
-          </div>
-      </div>
+
       <div class="row" id="requestCertificate">
           <div class="col-md-12">
-            <h2>For Students</h2>
-            <h3>Request a Certificate</h3>
+            <h1 class="text-center header">For Students</h1>
+            <h2>Request a Certificate</h2>
             <p>Students may request a certificate by entering the certificate ID.
                 The smart contract will check the student's address and ensure the student is eligible to receive the certificate, based on the number of courses they have successfully passed.
                 The cost of the certificate is 1Ξ, paid by the student. Make sure to send the request from the right address!
@@ -62,19 +48,80 @@
             </form>
           </div>
       </div>
+    <!-- Student only - auth is by the active Metamask ID -->
+    <div class="row studentOnly" id="studentInfo">
+        <div class="col-md-12">
+            <h2 class="header"><span class="studentInfoName studentInfoField"></span>'s Info</h2>
+            <h3>Student Address: <span class="studentInfoAddress studentInfoField"></span></h3>
+            <div id="studentAccordion">
+                <div class="card" id="studentInfoCertsContainer">
+                    <div class="card-header" id="studentInfoCertsTitle">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#studentInfoCertsContent" aria-expanded="false" aria-controls="studentInfoCertsContent">
+                                View My Certs
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="studentInfoCertsContent" class="collapse-show collapse" aria-labelledby="studentInfoCertsTitle" data-parent="#studentAccordion">
+                        <div class="card-body" class="studentInfoField" id="studentInfoCerts">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="studentInfoEnrollmentsContainer">
+                    <div class="card-header" id="studentInfoEnrollmentsTitle">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#studentInfoEnrollmentsContent" aria-expanded="false" aria-controls="studentInfoEnrollmentsContent">
+                                View My Course Enrollments
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="studentInfoEnrollmentsContent" class="collapse-show collapse" aria-labelledby="studentInfoEnrollmentsTitle" data-parent="#studentAccordion">
+                        <div class="card-body" class="studentInfoField" id="studentInfoEnrollments">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      <div class="row" id="cert-type-container">
+        <div class="col-md-12">
+          <h2 class="header">Certificates Offered</h2>
+          <div class="row" id="certificateTypes">
+            
+          </div>
+        </div>
+    </div>
+    <div class="row" id="course-container">
+        <div class="col-md-12">
+          <h2>Courses Offered</h2>
+          <div class="row" id="courses">
+
+          </div>
+        </div>
+    </div>
       
       <div class="row" id="validateCertificate">
           <div class="col-md-12">
-            <h2>For Employers and Institutions</h2>
-          <h3>Validate a Credential</h3>
-          <p>Enter a unique credential ID here to validate that the credential is legitimate.</p>
-          </div>
+            <h1 class="text-center header">For Employers and Institutions</h1>
+            <h2>Validate a Credential</h2>
+            <p>Enter a unique credential ID here to validate that the credential is legitimate.</p>
+            <form id="validateForm">
+                <div class="form-group">
+                    <label for="validateCertId">Certificate Id</label>
+                    <input type="text" class="form-control" id="validateCertId" placeholder="">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2" id="validateCert">Validate Certificate</button>
+            </form>
+            <div id="validatedCert" class="row"></div>
+        </div>
       </div>
 
       <!-- Admin Only-->
       <div class="row ownerOnly" id="admin">
         <div class="col-md-12">
-            <h2>Admin Functions</h2>
+            <h1 class="header">Admin Functions</h1>
             <div id="accordion">
                 <div class="card" id="student-container">
                     <div class="card-header" id="student-container-title">
@@ -104,6 +151,19 @@
 
                         </div>
                     </div>
+                </div>
+
+                <div class="card" id="cert-container">
+                    <div class="card-header" id="cert-container-title">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#cert-container-content" aria-expanded="false" aria-controls="cert-container-content">
+                              View Issued Certificates
+                            </button>
+                          </h5>
+                    </div>
+                    <div id="cert-container-content" class="collapse-show collapse" aria-labelledby="cert-container-title" data-parent="#accordion">
+                        <div class="card-body" id="certs"></div>
+                    </div> 
                 </div>
 
                 <div class="card" id="addCourseContainer">
@@ -269,6 +329,34 @@
             </p>
         </div>
     </div>
+
+    <div id="certificateTemplate" style="display:none">
+        <div class="col-md-6">
+            <div class="alert" role="alert"></div>
+            <div class="certInnerContent">
+                <h4><span class="certificateName"></span> (ID <span class="certId"></span>)</h4>
+                <h4>Earned by <span class="certStudentName"></span></h4>
+                <h5>Issued <span class="certIssuedDate"></span></h5>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertTemplate" style="display:none">
+        <div class="alert alert-dismissible fade show fixed-top" role="alert">
+            <span class="alertContent"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="enrollmentStudentTemplate" style="display:none">
+        <div class="col-md-6">
+            <h4>Course: <span class="enrollmentStudentCourse"></span></h4>
+            <p class="enrollmentStudentCourseDesc"></p>
+            <p>Enrollment ID: <span class="enrollmentId"></span> (<span class="enrollmentPass"></span>)</p>        </div>
+    </div>
+
     <!-- End Templates -->
 
     <!-- Bootstrap files including jQuery - not slim, need Ajax -->
