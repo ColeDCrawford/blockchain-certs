@@ -116,6 +116,7 @@ contract CertificateIssuer {
         Certificate memory cert = Certificate(certificateId, studentName, studentAddress, certificateTypeId, issuedDate, true);
         
         issued_certificates[certificateId] = cert;
+        certIds.push(certificateId);
         students[studentAddress].certificateIds.push(certificateId);
         
         return certificateId;
