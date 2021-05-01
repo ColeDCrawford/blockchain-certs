@@ -1,5 +1,5 @@
 {
     "server": {
-      "baseDir": ["./plain", "./src/contracts"]
+      "baseDir": ["./src", "./src/contracts"]
     }
   }
