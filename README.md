@@ -42,3 +42,18 @@ npm install
 ```
 npm run dev
 ```
+### Sample Content
+- Certificates 
+    - There is a sample DSSG certificate which gets deployed from the `2_deploy_contracts.js` migration
+    - Bok Center Teaching Certificate
+        - The Bok Center's Teaching Certificate offers GSAS PhD students a tangible marker of their ongoing commitment to developing as teachers in higher education. GSAS PhD students may pursue a Certificate through a variety of different avenues, depending on the pedagogical training offered in their respective departments and their own skills and interests. In order to receive a Teaching Certificate, participants must fulfill requirements in each of the following three areas: (1) Learn; (2) Practice; and (3) Reflect.
+        - 1 course required (just to have something different)
+- Courses
+    - Visual Eloquence: A Participatory Workshop on Creating Effective Data Visualizations
+        - Visual Eloquence is a participatory workshop on visualizing data and understanding the powerful role it plays in analysis and presentation for digital scholarship. You will learn some fundamentals principles for presenting data and work with others to put them into action. The workshop will feature brief presentations, a collaborative small-group exercise working with a dataset and visualization tools to create a visual presentation, and a discussion.
+    - Fundamentals of Digital Scholarship
+        - Fundamentals of Digital Scholarship introduces participants to the core stages of digital scholarship’s research workflow: the acquisition, manipulation, analysis, and presentation of data. This seminar serves as a springboard for faculty, students, and staff who wish to explore the potential of digital scholarship. It will provide a solid foundation from which participants can continue to develop these skills whether on their own or through a series of advanced, subject-specific follow-up seminars.
+    - Using Web APIs with Python
+        - Comfortable with basic Python and want to expand your digital toolkit? Interested in querying and analyzing real-time data or faceted big data? Want to process data using web services or create data mashups? This workshop will help participants integrate RESTful APIs into their data processing workflows. We'll look at how to query the Harvard Art Museums API to get metadata about the most popular images in their collections and exhibits, use the IIIF Image API to manipulate the image files, and use the Omeka API to push information into our own collection of digital objects.
+    - Scalar in the Classroom
+        - Introducing multimedia assignments into a class for the first time can seem intimidating. In this workshop, we will help you remediate an existing assignment in Scalar, a free, open source authoring and publishing platform designed to make it easy for authors and instructors to create born-digital scholarship online. Scalar enables users to assemble media from multiple sources and juxtapose them with their own writing in a variety of ways, with minimal technical expertise required.
